@@ -100,6 +100,13 @@ const CONFIG = {
       }
     });
     // Elements already in view on load reveal immediately via the same batch.
+
+    // Lazy images can nudge layout as they decode — keep trigger positions fresh.
+    $$('img[loading="lazy"]').forEach((img) => {
+      if (!img.complete) {
+        img.addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
+      }
+    });
   }
 
   /* ------------------------------------------------------------------------

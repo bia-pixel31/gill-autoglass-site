@@ -56,6 +56,25 @@ Search `index.html` for `TODO` to find every item below in place:
       [Formspree](https://formspree.io) or Netlify Forms (TODO marked in the wizard
       section of `index.html` and in `js/main.js`).
 
+## Photos (`assets/photos/`)
+
+Owner-supplied photos, renamed to web-safe names. Currently wired into the site:
+
+| File | Used where |
+|---|---|
+| `workshop-entrance.jpg` | Contact section (customer entrance, 418-C door) |
+
+Available but not yet placed (say the word and they can be wired in):
+
+| File | Contents |
+|---|---|
+| `tech-semi-windshield.jpg` | Tech replacing a semi-truck windshield — great for hero/mobile-service |
+| `shop-bay-pathfinder.jpg` / `shop-bay-rav4.jpg` / `shop-bay-malibu.jpg` | Vehicles in the shop bay |
+| `fleet-step-van.jpg` | Step van in the bay (EXIF-rotated; browsers display it upright) |
+| `brand-business-card.jpg` | Scan of the business card — brand reference, not for the page |
+
+New photos: use lowercase-hyphen names (`.jpg`/`.webp`), no spaces or parentheses.
+
 ## Adding a Resources article
 
 In `index.html`, find the Resources section (`id="resources"`). Copy an existing

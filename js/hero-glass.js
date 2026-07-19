@@ -24,10 +24,10 @@
     opts = opts || {};
 
     /* ---------- renderer / scene / camera ---------- */
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    // DPR cap: 1.5 desktop, 1.25 on narrow screens to protect mobile framerate
-    const dprCap = (container.clientWidth || window.innerWidth) < 700 ? 1.25 : 1.5;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, dprCap));
+    // Narrow screens get a lighter scene: lower DPR cap, no MSAA, fewer shards.
+    const isNarrow = (container.clientWidth || window.innerWidth) < 700;
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !isNarrow });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isNarrow ? 1.25 : 1.5));
     renderer.domElement.style.pointerEvents = "none";
     container.appendChild(renderer.domElement);
 
@@ -103,8 +103,8 @@
     group.add(shadow);
 
     /* ---------- build the spiderweb of shards ---------- */
-    const SPOKES = 9;
-    const RINGS = [0.4, 0.85, 1.4, 2.05, 2.8];
+    const SPOKES = isNarrow ? 7 : 9;
+    const RINGS = isNarrow ? [0.45, 1.05, 1.8, 2.8] : [0.4, 0.85, 1.4, 2.05, 2.8];
     const rand = (a, b) => a + Math.random() * (b - a);
 
     // Vertex lattice: rings x spokes, with jitter for an organic crack look.
@@ -194,7 +194,7 @@
        call, so this detail is essentially free. Fades as the pane heals. */
     function buildFineCracks() {
       const pts = [];
-      const MAIN = 12;
+      const MAIN = isNarrow ? 9 : 12;
       for (let i = 0; i < MAIN; i++) {
         let angle = (i / MAIN) * Math.PI * 2 + rand(-0.14, 0.14);
         let x = Math.cos(angle) * 0.05;

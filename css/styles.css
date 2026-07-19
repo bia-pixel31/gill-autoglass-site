@@ -1098,6 +1098,27 @@ h3 { font-family: var(--font-accent); font-weight: 700; font-size: var(--text-h3
 }
 .contact-line .icon { color: var(--gold-400); margin-top: 0.2rem; }
 
+.contact-photo {
+  margin: 0 0 1.1rem;
+}
+.contact-photo img {
+  width: 100%;
+  max-height: 340px;
+  object-fit: cover;
+  object-position: center 35%; /* keep the 418-C door lettering in frame */
+  border: 1px solid var(--line-dark);
+  border-radius: var(--radius);
+  display: block;
+}
+.contact-photo figcaption {
+  font-family: var(--font-accent);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--white-70);
+  margin-top: 0.55rem;
+}
+
 .contact-cta-card {
   background: rgba(8, 26, 46, 0.35);
   border: 1px solid var(--line-dark);
