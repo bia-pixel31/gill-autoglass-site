@@ -23,14 +23,14 @@ const CONFIG = {
   phoneE164: "+13069148760",          // used for tel: and sms: links
   email: "gillautoglassyxe@gmail.com",
   address: "418C 47th Street E, Saskatoon SK",
-  addressLandmark: "Same building as Sami's Sunrise Grill, north industrial area",
   hours: "8 AM – 6 PM",           // TODO (OWNER VERIFY): confirm which days
   serviceArea: "Saskatoon and surrounding areas",
   domain: "gillautoglassyxe.ca",
-  mapsUrl: "https://maps.google.com/?q=418C+47th+Street+E,+Saskatoon,+SK",
+  mapsUrl: "https://maps.app.goo.gl/jPs7yCjwYFLKRCR47",
   responsePromise: "Free quotes same-day or as soon as possible — call or text anytime for a time estimate.",
-  // TODO: replace with the shop's real Google review link + socials.
-  googleReviewUrl: "#",
+  googleReviewUrl: "https://share.google/PiUqJ9A77EirJnChJ",
+  facebookUrl: "https://www.facebook.com/profile.php?id=61591856556349",
+  // TODO: replace # with real Instagram / X profile URLs.
   instagramUrl: "#",
   xUrl: "#"
 };
@@ -48,6 +48,12 @@ const CONFIG = {
   $$('a[href^="tel:"]').forEach((a) => { a.href = "tel:" + CONFIG.phoneE164; });
   $$('a[href^="sms:"]').forEach((a) => { a.href = "sms:" + CONFIG.phoneE164; });
   $$('a[href^="mailto:"]').forEach((a) => { a.href = "mailto:" + CONFIG.email; });
+  // External links carried in CONFIG (maps, Google reviews, socials)
+  const linkMap = { maps: CONFIG.mapsUrl, reviews: CONFIG.googleReviewUrl, facebook: CONFIG.facebookUrl };
+  $$("[data-link]").forEach((a) => {
+    const url = linkMap[a.dataset.link];
+    if (url) a.href = url;
+  });
   const yearEl = $("#footerYear");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
@@ -257,8 +263,8 @@ const CONFIG = {
       answer: "We're open " + CONFIG.hours + ". " + CONFIG.responsePromise
     },
     {
-      keys: ["where", "location", "address", "find you", "directions", "sami"],
-      answer: "We're at " + CONFIG.address + " — " + CONFIG.addressLandmark.toLowerCase() + ". Map: " + CONFIG.mapsUrl
+      keys: ["where", "location", "address", "find you", "directions"],
+      answer: "We're at " + CONFIG.address + ". Map: " + CONFIG.mapsUrl
     },
     {
       keys: ["mobile", "come to", "at my", "my house", "my work", "driveway", "on site", "on-site"],
@@ -270,7 +276,7 @@ const CONFIG = {
     },
     {
       keys: ["adas", "calibrat", "camera", "sensor", "lane", "braking"],
-      answer: "ADAS calibration re-aims the safety cameras (lane assist, automatic braking) that often sit behind your windshield. Many newer vehicles need it after a windshield replacement — and we do it in-house, same visit."
+      answer: "ADAS calibration re-aims the safety cameras (lane assist, automatic braking) that often sit behind your windshield. Many newer vehicles need it after a windshield replacement — and we do it in-shop or at your location, anywhere in " + CONFIG.serviceArea + ", same visit."
     },
     {
       keys: ["quote", "price", "cost", "how much", "estimate"],

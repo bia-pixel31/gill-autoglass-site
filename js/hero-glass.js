@@ -25,7 +25,9 @@
 
     /* ---------- renderer / scene / camera ---------- */
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5)); // DPR cap
+    // DPR cap: 1.5 desktop, 1.25 on narrow screens to protect mobile framerate
+    const dprCap = (container.clientWidth || window.innerWidth) < 700 ? 1.25 : 1.5;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, dprCap));
     renderer.domElement.style.pointerEvents = "none";
     container.appendChild(renderer.domElement);
 
@@ -33,16 +35,72 @@
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 50);
     camera.position.set(0, 0, 8);
 
-    scene.add(new THREE.AmbientLight(0x8fa8c8, 0.75));
-    const key = new THREE.DirectionalLight(0xffffff, 0.9);
+    // Soft sky/ground fill so shard faces shade gradually, not flat.
+    // (Doubles as the ambient term — one light fewer per fragment.)
+    scene.add(new THREE.HemisphereLight(0xcfe0f2, 0x16281e, 0.95));
+    const key = new THREE.DirectionalLight(0xffffff, 0.85);
     key.position.set(2.5, 3, 5);
     scene.add(key);
-    const rim = new THREE.DirectionalLight(0xe8b426, 0.25); // faint gold rim
+    const rim = new THREE.DirectionalLight(0xe8b426, 0.22); // faint gold rim
     rim.position.set(-3, -2, 4);
     scene.add(rim);
 
+    /* Tiny generated cube env map — gives the glass a believable specular
+       world (bright sky above, dark prairie below) at negligible cost. */
+    function makeEnvMap() {
+      const faces = [];
+      for (let i = 0; i < 6; i++) {
+        const c = document.createElement("canvas");
+        c.width = c.height = 64;
+        const g = c.getContext("2d");
+        const grad = g.createLinearGradient(0, 0, 0, 64);
+        grad.addColorStop(0, "#e8f0f8");
+        grad.addColorStop(0.45, "#48678a");
+        grad.addColorStop(1, "#0a1c30");
+        g.fillStyle = grad;
+        g.fillRect(0, 0, 64, 64);
+        faces.push(c);
+      }
+      // hot glint on the top face, like low prairie sun
+      const top = faces[2].getContext("2d");
+      const tg = top.createRadialGradient(32, 26, 3, 32, 26, 38);
+      tg.addColorStop(0, "rgba(255, 250, 235, 0.95)");
+      tg.addColorStop(1, "rgba(255, 250, 235, 0)");
+      top.fillStyle = tg;
+      top.fillRect(0, 0, 64, 64);
+      const tex = new THREE.CubeTexture(faces);
+      tex.needsUpdate = true;
+      return tex;
+    }
+    const envMap = makeEnvMap();
+
     const group = new THREE.Group();
     scene.add(group);
+
+    /* Soft contact shadow behind/below the pane — reads as ambient
+       occlusion so the glass sits in space instead of floating flat. */
+    function shadowTexture() {
+      const c = document.createElement("canvas");
+      c.width = c.height = 128;
+      const g = c.getContext("2d");
+      const grad = g.createRadialGradient(64, 64, 8, 64, 64, 64);
+      grad.addColorStop(0, "rgba(3, 10, 18, 0.85)");
+      grad.addColorStop(0.55, "rgba(3, 10, 18, 0.38)");
+      grad.addColorStop(1, "rgba(3, 10, 18, 0)");
+      g.fillStyle = grad;
+      g.fillRect(0, 0, 128, 128);
+      return new THREE.CanvasTexture(c);
+    }
+    const shadowMat = new THREE.SpriteMaterial({
+      map: shadowTexture(),
+      transparent: true,
+      opacity: 0.45,
+      depthWrite: false
+    });
+    const shadow = new THREE.Sprite(shadowMat);
+    shadow.position.set(0.4, -0.7, -1.1);
+    shadow.scale.set(5.6, 4.4, 1); // kept modest — sprite fill is the costly part
+    group.add(shadow);
 
     /* ---------- build the spiderweb of shards ---------- */
     const SPOKES = 9;
@@ -60,10 +118,13 @@
 
     const shardMaterial = new THREE.MeshPhongMaterial({
       color: 0x9fc4e8,
-      specular: 0xbcd6ee,
-      shininess: 90,
+      specular: 0xffffff,
+      shininess: 170,               // tight, glassy highlight
       transparent: true,
-      opacity: 0.16,
+      opacity: 0.17,
+      envMap: envMap,               // real reflections instead of flat shading
+      reflectivity: 0.5,
+      combine: THREE.MixOperation,
       side: THREE.DoubleSide,
       depthWrite: false
     });
@@ -85,12 +146,13 @@
 
       const mesh = new THREE.Mesh(geo, shardMaterial);
 
-      // Crack edge outline, parented so it moves with the shard.
+      // Shard edge outline, parented so it moves with the shard.
+      // Kept faint — the fine branching cracks below carry the fracture look.
       const lineGeo = new THREE.BufferGeometry().setFromPoints(rel.concat([rel[0]]));
       const lineMat = new THREE.LineBasicMaterial({
         color: 0xdcecff,
         transparent: true,
-        opacity: 0.55
+        opacity: 0.3
       });
       mesh.add(new THREE.Line(lineGeo, lineMat));
 
@@ -125,6 +187,55 @@
         makeShard([lattice[r][s], lattice[r][s2], lattice[r + 1][s2], lattice[r + 1][s]]);
       }
     }
+
+    /* ---------- fine branching fracture cracks ----------
+       Real windshield damage isn't a tidy polygon web: thin cracks wander
+       and fork as they radiate from the chip. One LineSegments = one draw
+       call, so this detail is essentially free. Fades as the pane heals. */
+    function buildFineCracks() {
+      const pts = [];
+      const MAIN = 12;
+      for (let i = 0; i < MAIN; i++) {
+        let angle = (i / MAIN) * Math.PI * 2 + rand(-0.14, 0.14);
+        let x = Math.cos(angle) * 0.05;
+        let y = Math.sin(angle) * 0.05;
+        const steps = 12 + Math.floor(rand(0, 5));
+        const step = (maxRadius * rand(0.5, 1.0)) / steps;
+        for (let sIdx = 0; sIdx < steps; sIdx++) {
+          angle += rand(-0.16, 0.16); // wander
+          const nx = x + Math.cos(angle) * step;
+          const ny = y + Math.sin(angle) * step;
+          pts.push(x, y, 0, nx, ny, 0);
+          if (sIdx > 1 && Math.random() < 0.28) {
+            // fork a shorter branch off the main crack
+            let ba = angle + (Math.random() < 0.5 ? 1 : -1) * rand(0.35, 0.85);
+            let bx = nx, by = ny;
+            const bSteps = 2 + Math.floor(rand(0, 3));
+            const bStep = step * rand(0.45, 0.75);
+            for (let b = 0; b < bSteps; b++) {
+              ba += rand(-0.22, 0.22);
+              const cx2 = bx + Math.cos(ba) * bStep;
+              const cy2 = by + Math.sin(ba) * bStep;
+              pts.push(bx, by, 0, cx2, cy2, 0);
+              bx = cx2; by = cy2;
+            }
+          }
+          x = nx; y = ny;
+        }
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
+      return geo;
+    }
+    const fineCrackMat = new THREE.LineBasicMaterial({
+      color: 0xeaf4ff,
+      transparent: true,
+      opacity: 0.5,
+      depthWrite: false
+    });
+    const fineCracks = new THREE.LineSegments(buildFineCracks(), fineCrackMat);
+    fineCracks.position.z = 0.015;
+    group.add(fineCracks);
 
     /* ---------- gold "stone chip" glint at the impact point ---------- */
     function glintTexture() {
@@ -217,9 +328,18 @@
           s.tumble.y * (1 - local),
           s.tumble.z * (1 - local)
         );
-        // Crack lines fade as the glass heals (never fully vanish — glass is real).
-        s.lineMat.opacity = 0.55 - 0.5 * local;
+        // Shard outlines fade as the glass heals (never fully vanish — glass is real).
+        s.lineMat.opacity = 0.3 - 0.27 * local;
       }
+
+      // Fine fracture web: strongest while broken, gone when whole.
+      fineCrackMat.opacity = 0.55 * (1 - progress) * (1 - progress) + 0.02;
+
+      // Contact shadow: spread and heavy under floating shards, tighter and
+      // lighter once the pane sits whole.
+      shadowMat.opacity = 0.45 - 0.22 * progress;
+      const sSpread = 1 + 0.18 * (1 - progress);
+      shadow.scale.set(5.6 * sSpread, 4.4 * sSpread, 1);
 
       // Chip glint: pulses while shattered, dies away as the pane completes.
       const glow = (1 - progress) * (0.65 + 0.35 * Math.sin(t * 2.4));

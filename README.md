@@ -46,10 +46,10 @@ Search `index.html` for `TODO` to find every item below in place:
       Also update the `openingHoursSpecification` in the JSON-LD (currently Mon–Sat).
 - [ ] **Logo** — the nav uses a text wordmark. Replace it with the owner's vector
       logo when available (marked with a TODO in `index.html`).
-- [ ] **Google review link** — replace the two `href="#"` Google Reviews placeholders
-      (reviews section + footer) with the real review URL, and swap the placeholder
-      review cards for real Google reviews.
-- [ ] **Socials** — replace the Instagram / X `href="#"` placeholders in the footer.
+- [ ] **Review cards** — the Google review link is wired (reviews section, contact,
+      footer); swap the placeholder review cards for real Google reviews.
+- [ ] **Socials** — Facebook is wired; replace the Instagram / X `href="#"`
+      placeholders in the footer when those profiles exist.
 - [ ] **Privacy policy** — `privacy.html` is a template; review before relying on it.
 - [ ] **Quote form backend** — submissions currently open a pre-filled email in the
       visitor's own mail app (`mailto:`). For silent background submission, swap in
@@ -69,7 +69,8 @@ Colours, fonts, spacing, and z-index live as CSS variables at the top of
 `css/styles.css`. Palette: deep navy `#0E2A47` (base) · prairie green `#1B4332`
 (secondary) · gold `#E8B426` (sparing accent — CTAs and thin rules only).
 Fonts: Fraunces (display) · Instrument Sans (body) · Hanken Grotesk (accents).
-All shipped colour pairs pass WCAG AA (4.5:1+).
+All shipped colour pairs pass WCAG AA (4.5:1+). Section rhythm alternates
+navy → off-white → green so all three brand colours stay visible.
 
 ## Privacy & compliance notes
 
