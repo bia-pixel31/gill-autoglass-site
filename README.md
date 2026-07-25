@@ -46,8 +46,11 @@ Search `index.html` for `TODO` to find every item below in place:
       Also update the `openingHoursSpecification` in the JSON-LD (currently Mon–Sat).
 - [ ] **Logo** — the nav uses a text wordmark. Replace it with the owner's vector
       logo when available (marked with a TODO in `index.html`).
-- [ ] **Review cards** — the Google review link is wired (reviews section, contact,
-      footer); swap the placeholder review cards for real Google reviews.
+- [ ] **Reviews section** — the whole Reviews section is **commented out** in
+      `index.html` (no fabricated testimonials are shown). The "Review Us on
+      Google" button lives in the Contact section. To turn Reviews back on,
+      follow the "TO RE-ENABLE" steps in the commented block and add **only
+      real** Google reviews — never invented ones.
 - [ ] **Socials** — Facebook is wired; replace the Instagram / X `href="#"`
       placeholders in the footer when those profiles exist.
 - [ ] **Privacy policy** — `privacy.html` is a template; review before relying on it.
