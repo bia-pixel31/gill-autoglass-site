@@ -49,10 +49,9 @@ Search `index.html` for `TODO` to find every item below in place:
 
 - [ ] **OWNER VERIFY: SGI claim wording**, the claims section, claims FAQ, and the
       claims resource article. Confirm the process description is accurate.
-- [ ] **SGI Preferred Partner logo**, upload the official PNG to
-      `assets/photos/sgi-preferred-partner.png`. The trust-badge slot is already
-      wired; until the file exists the badge auto-hides. Do not recolour or alter
-      the logo.
+- [x] **SGI Preferred Partner logo**, done. The official logo lives at
+      `assets/photos/sgi-preferred-partner.png` and shows in the hero trust-badge
+      row (matched to badge height, shown as-is with no recolour).
 - [ ] **Logo**, the nav uses a text wordmark. Replace it with the owner's vector
       logo when available (marked with a TODO in `index.html`).
 - [ ] **Reviews section**, the whole Reviews section is **commented out** in
@@ -75,6 +74,7 @@ Owner-supplied photos, renamed to web-safe names. Currently wired into the site:
 | File | Used where |
 |---|---|
 | `workshop-entrance.jpg` | Contact section (customer entrance, 418-C door) |
+| `sgi-preferred-partner.png` | Hero trust-badge row (official SGI logo, shown as-is) |
 
 Available but not yet placed (say the word and they can be wired in):
 
