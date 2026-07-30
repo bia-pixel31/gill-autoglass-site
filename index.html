@@ -499,7 +499,24 @@
           <a href="sms:+13069148760">text 306-914-8760</a> anytime.
         </p>
 
-        <form class="wizard reveal" id="quoteWizard" novalidate>
+        <!--
+          Netlify Forms: on deploy, Netlify detects this static form by its
+          name + data-netlify attribute and captures every submission (no
+          backend needed). JS submits it over AJAX (see js/main.js) so the
+          on-page success message shows without a reload; if that POST ever
+          fails (e.g. hosted somewhere other than Netlify) it falls back to a
+          pre-filled mailto so the request still reaches the shop.
+          "bot-field" is a honeypot: real people leave it blank; bots that fill
+          it get silently dropped by Netlify.
+        -->
+        <form class="wizard reveal" id="quoteWizard" name="quote" method="POST"
+              data-netlify="true" netlify-honeypot="bot-field" novalidate>
+          <input type="hidden" name="form-name" value="quote">
+          <!-- Netlify uses a field named "subject" for the notification email subject line -->
+          <input type="hidden" name="subject" id="wzSubject" value="New quote request from gillautoglassyxe.ca">
+          <p class="visually-hidden" aria-hidden="true">
+            <label>Do not fill this out if you're human: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+          </p>
           <!-- Progress indicator -->
           <ol class="wizard-progress" aria-hidden="true">
             <li class="wp-step is-active" data-wp="1"><span class="wp-dot"></span>Vehicle</li>
@@ -538,12 +555,11 @@
               </div>
             </div>
             <div class="field">
-              <span class="field-label" id="lblRebuilt">Rebuilt / salvage title?</span>
-              <div class="chip-group" role="radiogroup" aria-labelledby="lblRebuilt">
-                <label class="chip"><input type="radio" name="rebuilt" value="No" checked><span>No</span></label>
-                <label class="chip"><input type="radio" name="rebuilt" value="Yes"><span>Yes</span></label>
-                <label class="chip"><input type="radio" name="rebuilt" value="Not sure"><span>Not sure</span></label>
-              </div>
+              <label for="wzVin">VIN <span class="optional">(optional)</span></label>
+              <input type="text" id="wzVin" name="vin" autocomplete="off" maxlength="17"
+                     placeholder="e.g. 1HGCM82633A004352"
+                     aria-describedby="vinHelp">
+              <p class="field-help" id="vinHelp">This speeds up checking if the specific windshield is in stock for your vehicle.</p>
             </div>
             <p class="wizard-error" data-error-for="1" hidden>Please fill in the year, make, and model.</p>
             <div class="wizard-nav">
@@ -596,28 +612,27 @@
           <!-- STEP 3: Contact -->
           <fieldset class="wizard-step" data-step="3" hidden>
             <legend>Step 3: How do we reach you?</legend>
+            <div class="field">
+              <label for="wzName">Name <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="wzName" name="name" autocomplete="name" required>
+            </div>
+            <p class="field-help" id="reachHelp">Phone or email: you don't need both, but we need at least one so we can get back to you.</p>
             <div class="field-row">
               <div class="field">
-                <label for="wzName">Name <span class="req" aria-hidden="true">*</span></label>
-                <input type="text" id="wzName" name="name" autocomplete="name" required>
+                <label for="wzPhone">Phone</label>
+                <input type="tel" id="wzPhone" name="phone" autocomplete="tel" placeholder="306-555-0100" aria-describedby="reachHelp">
               </div>
               <div class="field">
-                <label for="wzPhone">Phone <span class="req" aria-hidden="true">*</span></label>
-                <input type="tel" id="wzPhone" name="phone" autocomplete="tel" placeholder="306-555-0100" required>
+                <label for="wzEmail">Email</label>
+                <input type="email" id="wzEmail" name="email" autocomplete="email" aria-describedby="reachHelp" placeholder="you@example.com">
               </div>
             </div>
-            <div class="field-row">
-              <div class="field">
-                <span class="field-label" id="lblPrefer">Preferred contact</span>
-                <div class="chip-group" role="radiogroup" aria-labelledby="lblPrefer">
-                  <label class="chip"><input type="radio" name="preferredContact" value="Text" checked><span>Text</span></label>
-                  <label class="chip"><input type="radio" name="preferredContact" value="Call"><span>Call</span></label>
-                  <label class="chip"><input type="radio" name="preferredContact" value="Email"><span>Email</span></label>
-                </div>
-              </div>
-              <div class="field">
-                <label for="wzEmail">Email <span class="optional">(optional)</span></label>
-                <input type="email" id="wzEmail" name="email" autocomplete="email">
+            <div class="field">
+              <span class="field-label" id="lblPrefer">Preferred contact</span>
+              <div class="chip-group" role="radiogroup" aria-labelledby="lblPrefer">
+                <label class="chip"><input type="radio" name="preferredContact" value="Text" checked><span>Text</span></label>
+                <label class="chip"><input type="radio" name="preferredContact" value="Call"><span>Call</span></label>
+                <label class="chip"><input type="radio" name="preferredContact" value="Email"><span>Email</span></label>
               </div>
             </div>
             <div class="field">
@@ -632,29 +647,28 @@
               <label for="wzMessage">Anything else? <span class="optional">(optional)</span></label>
               <textarea id="wzMessage" name="message" rows="3" placeholder="Where the damage is, best times to reach you, etc."></textarea>
             </div>
-            <p class="wizard-error" data-error-for="3" hidden>Please add your name and phone number so we can get back to you.</p>
+            <p class="wizard-error" data-error-for="3" hidden>Please add your name and either a phone number or an email so we can reach you.</p>
             <div class="wizard-nav">
               <button type="button" class="btn btn-ghost" data-back="2">Back</button>
               <button type="submit" class="btn btn-gold">Send My Quote Request</button>
             </div>
             <p class="field-help wizard-mailto-note">
-              Submitting opens a pre-filled email to gillautoglassyxe@gmail.com in your mail app.
-              review it and hit send. Or skip the form entirely and
-              <a href="sms:+13069148760">text us</a>.
+              Submitting sends your request straight to us, no email app needed. Prefer to text?
+              <a href="sms:+13069148760">Text us</a>.
             </p>
           </fieldset>
 
-          <!-- SUCCESS -->
+          <!-- SUCCESS (title + body filled by JS depending on send path) -->
           <div class="wizard-success" id="wizardSuccess" hidden tabindex="-1">
             <svg class="icon icon-lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
-            <h3>Request ready: check your email app</h3>
-            <p>
-              Your pre-filled quote request just opened in your mail app. Hit send and we'll get
-              back to you <strong>same-day or as soon as possible</strong> with a free quote.
+            <h3 id="wizardSuccessTitle">Thanks, your request is in</h3>
+            <p id="wizardSuccessBody">
+              We've got your quote request and we'll get back to you
+              <strong>same-day or as soon as possible</strong> with a free quote.
             </p>
             <p>
-              Nothing opened? Email <a href="mailto:gillautoglassyxe@gmail.com">gillautoglassyxe@gmail.com</a>
-              or call / text <a href="tel:+13069148760"><strong>306-914-8760</strong></a>. Texts welcome, anytime.
+              Need us sooner? Call or text <a href="tel:+13069148760"><strong>306-914-8760</strong></a>,
+              or email <a href="mailto:gillautoglassyxe@gmail.com">gillautoglassyxe@gmail.com</a>. Texts welcome, anytime.
             </p>
             <button type="button" class="btn btn-ghost" id="wizardRestart">Start another request</button>
           </div>
@@ -920,7 +934,7 @@
     </div>
     <div class="container footer-bottom">
       <p>&copy; <span id="footerYear">2026</span> Gill Auto Glass Ltd. · Saskatoon, SK</p>
-      <p><a href="privacy.html">Privacy Policy</a></p>
+      <p><a href="privacy.html">Privacy Policy</a> · <a href="accessibility.html">Accessibility</a></p>
       <p class="footer-domain">gillautoglassyxe.ca</p>
     </div>
   </footer>

@@ -9,11 +9,12 @@ hero) and GSAP ScrollTrigger (scroll reveals) load from CDN.
 ## Files
 
 ```
-index.html      , the whole site (all sections, wizard, FAQ, schema)
-privacy.html    , privacy policy page (TEMPLATE, owner should review)
-css/styles.css  , all styles; design tokens at the top
-js/main.js      , CONFIG + all behavior (wizard, chatbot, reveals, 3D loader)
-js/hero-glass.js, the Three.js shattered-glass hero (loaded on demand)
+index.html         , the whole site (all sections, wizard, FAQ, schema)
+privacy.html       , privacy policy page (TEMPLATE, owner should review)
+accessibility.html , accessibility statement (voluntary WCAG 2.1 AA)
+css/styles.css     , all styles; design tokens at the top
+js/main.js         , CONFIG + all behavior (wizard, chatbot, reveals, 3D loader)
+js/hero-glass.js   , the Three.js shattered-glass hero (loaded on demand)
 ```
 
 ## Run it locally
@@ -62,10 +63,32 @@ Search `index.html` for `TODO` to find every item below in place:
 - [ ] **Socials**, Facebook is wired; replace the Instagram / X `href="#"`
       placeholders in the footer when those profiles exist.
 - [ ] **Privacy policy**, `privacy.html` is a template; review before relying on it.
-- [ ] **Quote form backend**, submissions currently open a pre-filled email in the
-      visitor's own mail app (`mailto:`). For silent background submission, swap in
-      [Formspree](https://formspree.io) or Netlify Forms (TODO marked in the wizard
-      section of `index.html` and in `js/main.js`).
+- [ ] **Turn on form email alerts in Netlify** (one click, see below). The form
+      already submits to Netlify; you just need to enable the notification.
+
+## Quote form (Netlify Forms)
+
+The quote wizard submits to **Netlify Forms**, so submissions are captured and
+emailed to you with **no backend to run**. The form is named `quote` and carries
+`data-netlify="true"`, a hidden `form-name` input, a hidden `subject` field (used
+for the notification subject), and a `bot-field` honeypot for spam. JavaScript
+submits it over AJAX so the on-page success message shows without a reload; if that
+POST ever fails (for example if you host somewhere other than Netlify), it falls
+back to opening a pre-filled email, so a request never gets lost.
+
+**This only captures submissions once the site is deployed on Netlify** (Netlify
+detects the form at deploy time and intercepts the POST). To receive email alerts:
+
+1. Deploy the site to Netlify (see "Deploying" below).
+2. Submit the live form once yourself so Netlify registers the `quote` form. It
+   then appears under **Site configuration → Forms**.
+3. Go to **Site configuration → Forms → Form notifications → Add notification →
+   Email notification**.
+4. Enter **gillautoglassyxe@gmail.com** as the recipient and save.
+
+That's the one step you need to click. After that, every submission emails you and
+is also stored under **Forms** in the Netlify dashboard. (To switch providers later,
+the AJAX POST lives in the wizard `submit` handler in `js/main.js`.)
 
 ## Photos (`assets/photos/`)
 

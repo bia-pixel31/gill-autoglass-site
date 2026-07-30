@@ -208,7 +208,10 @@ const CONFIG = {
       return ok;
     }
     if (n === 3) {
-      const ok = $("#wzName").value.trim() !== "" && $("#wzPhone").value.trim() !== "";
+      // Require a name plus at least one way to reach them (phone OR email).
+      const hasName = $("#wzName").value.trim() !== "";
+      const hasContact = $("#wzPhone").value.trim() !== "" || $("#wzEmail").value.trim() !== "";
+      const ok = hasName && hasContact;
       setStepError(3, !ok);
       return ok;
     }
@@ -226,57 +229,109 @@ const CONFIG = {
     }
   });
 
+  // Single source of the answers, keyed by the label used in the email body.
+  function collectAnswers() {
+    const v = (id) => $(id).value.trim();
+    return {
+      "Year": v("#wzYear"),
+      "Make": v("#wzMake"),
+      "Model": v("#wzModel"),
+      "Type": $("#wzType").value,
+      "VIN": v("#wzVin"),
+      "Glass needed": radioValue("glass"),
+      "Camera / sensors near mirror (possible ADAS)": radioValue("adas"),
+      "Mobile or in-shop": radioValue("serviceLocation"),
+      "Name": v("#wzName"),
+      "Phone": v("#wzPhone"),
+      "Email": v("#wzEmail"),
+      "Preferred contact": radioValue("preferredContact"),
+      "Going through SGI": radioValue("sgiClaim"),
+      "Message": v("#wzMessage")
+    };
+  }
+
+  function quoteSubject() {
+    const a = collectAnswers();
+    const vehicle = [a.Year, a.Make, a.Model].filter(Boolean).join(" ");
+    return "Free quote request for " + vehicle + " (" + (a["Glass needed"] || "glass") + ")";
+  }
+
   function buildMailto() {
-    const line = (label, value) => label + ": " + (value || "n/a");
+    const a = collectAnswers();
+    const line = (label) => label + ": " + (a[label] || "n/a");
     const body = [
-      "Quote request from " + CONFIG.domain,
-      "",
+      "Quote request from " + CONFIG.domain, "",
       "VEHICLE",
-      line("Year", $("#wzYear").value.trim()),
-      line("Make", $("#wzMake").value.trim()),
-      line("Model", $("#wzModel").value.trim()),
-      line("Type", $("#wzType").value),
-      line("Rebuilt / salvage title", radioValue("rebuilt")),
-      "",
+      line("Year"), line("Make"), line("Model"), line("Type"), line("VIN"), "",
       "GLASS",
-      line("Glass needed", radioValue("glass")),
-      line("Camera / sensors near mirror (possible ADAS)", radioValue("adas")),
-      line("Mobile or in-shop", radioValue("serviceLocation")),
-      "",
+      line("Glass needed"), line("Camera / sensors near mirror (possible ADAS)"), line("Mobile or in-shop"), "",
       "CONTACT",
-      line("Name", $("#wzName").value.trim()),
-      line("Phone", $("#wzPhone").value.trim()),
-      line("Preferred contact", radioValue("preferredContact")),
-      line("Email", $("#wzEmail").value.trim()),
-      line("Going through SGI", radioValue("sgiClaim")),
-      line("Message", $("#wzMessage").value.trim())
+      line("Name"), line("Phone"), line("Email"), line("Preferred contact"), line("Going through SGI"), line("Message")
     ].join("\n");
-
-    const vehicle = [$("#wzYear").value.trim(), $("#wzMake").value.trim(), $("#wzModel").value.trim()]
-      .filter(Boolean).join(" ");
-    const subject = "Free quote request for " + vehicle + " (" + (radioValue("glass") || "glass") + ")";
-
     return "mailto:" + CONFIG.email +
-      "?subject=" + encodeURIComponent(subject) +
+      "?subject=" + encodeURIComponent(quoteSubject()) +
       "&body=" + encodeURIComponent(body);
   }
 
   // Exposed for automated tests (harmless in production).
   window.__gagBuildMailto = buildMailto;
 
+  function showWizardSuccess(title, body) {
+    wizardStepEls().forEach((fs) => { fs.hidden = true; });
+    $$(".wp-step", wizard).forEach((li) => li.classList.add("is-done"));
+    if (title) $("#wizardSuccessTitle").textContent = title;
+    if (body) $("#wizardSuccessBody").innerHTML = body;
+    const success = $("#wizardSuccess");
+    success.hidden = false;
+    success.focus();
+  }
+
+  // Fallback: open the visitor's mail app with everything pre-filled.
+  function sendViaMailto() {
+    showWizardSuccess(
+      "Request ready: check your email app",
+      "Your pre-filled quote request just opened in your mail app. Hit send and we'll get back to " +
+      "you <strong>same-day or as soon as possible</strong>."
+    );
+    window.location.href = buildMailto();
+  }
+
   wizard.addEventListener("submit", (e) => {
     e.preventDefault();
     if (!validateStep(3)) return;
 
-    // Open the user's mail app with everything pre-filled.
-    window.location.href = buildMailto();
+    const submitBtn = wizard.querySelector('button[type="submit"]');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Sending…"; }
 
-    // Show the on-page success message with the response promise.
-    wizardStepEls().forEach((fs) => { fs.hidden = true; });
-    $$(".wp-step", wizard).forEach((li) => li.classList.add("is-done"));
-    const success = $("#wizardSuccess");
-    success.hidden = false;
-    success.focus();
+    // Primary path: POST to Netlify Forms (captured server-side, emailed to the
+    // shop). Set the notification subject, then serialise the form's own fields.
+    const subjectField = $("#wzSubject");
+    if (subjectField) subjectField.value = quoteSubject();
+    const fd = new FormData(wizard);
+    const encoded = new URLSearchParams();
+    fd.forEach((value, key) => { encoded.append(key, value); });
+
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: encoded.toString()
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Form POST failed: " + res.status);
+        showWizardSuccess(
+          "Thanks, your request is in",
+          "We've got your quote request and we'll get back to you " +
+          "<strong>same-day or as soon as possible</strong> with a free quote."
+        );
+      })
+      .catch(() => {
+        // Not on Netlify (e.g. local/preview) or offline: fall back to mailto so
+        // the request still reaches the shop.
+        sendViaMailto();
+      })
+      .finally(() => {
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Send My Quote Request"; }
+      });
   });
 
   $("#wizardRestart").addEventListener("click", () => {

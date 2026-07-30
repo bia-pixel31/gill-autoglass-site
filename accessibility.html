@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!-- Accessibility statement. Plain-language; reflects a voluntary WCAG 2.1 AA aim.
+     Not legal advice. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accessibility | Gill Auto Glass Ltd., Saskatoon</title>
+  <meta name="description" content="Accessibility statement for Gill Auto Glass Ltd., Saskatoon. Our commitment to WCAG 2.1 AA, reduced-motion support, and how to reach us if any part of the site is hard to use.">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://gillautoglassyxe.ca/accessibility.html">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Page-local layout (shared look with privacy.html) */
+    .policy-header {
+      background: linear-gradient(180deg, var(--navy-800), var(--navy-900));
+      color: var(--white-90);
+      padding: 6.5rem 1.25rem 3.5rem;
+    }
+    .policy-body { padding: 3rem 1.25rem 4.5rem; }
+    .policy-body h2 {
+      font-family: var(--font-accent);
+      font-size: 1.2rem;
+      color: var(--navy-800);
+      margin-top: 2.2rem;
+    }
+    .policy-body p, .policy-body li { max-width: 68ch; color: var(--ink); }
+    .policy-updated { color: var(--white-70); font-size: var(--text-small); }
+    .policy-note {
+      background: var(--paper-deep);
+      border-left: 3px solid var(--gold-500);
+      border-radius: var(--radius-sm);
+      padding: 0.9rem 1.1rem;
+      font-size: var(--text-small);
+      color: var(--ink-soft);
+      max-width: 68ch;
+    }
+  </style>
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-nav">
+    <div class="nav-inner">
+      <!-- TODO: replace wordmark with owner's vector logo when available. -->
+      <a href="index.html" class="wordmark" aria-label="Gill Auto Glass home">
+        GILL AUTO <span class="wordmark-accent">GLASS</span>
+      </a>
+      <nav class="nav-links is-open-static" aria-label="Main navigation" style="display:flex; align-items:center; gap:1rem;">
+        <a href="index.html">Back to site</a>
+        <a href="index.html#quote" class="btn btn-gold nav-cta">Free Quote</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="policy-header">
+      <div class="container container-narrow">
+        <p class="eyebrow eyebrow-light">Gill Auto Glass Ltd.</p>
+        <h1 class="section-title" style="color: var(--white);">Accessibility</h1>
+        <p class="policy-updated">Last updated: July 2026 <!-- TODO (OWNER VERIFY): confirm date at launch --></p>
+      </div>
+    </div>
+
+    <article class="policy-body section-paper">
+      <div class="container container-narrow">
+        <p class="policy-note">
+          This statement reflects our ongoing commitment to accessibility. Saskatchewan does not
+          currently mandate a specific accessibility standard for business websites, but we aim to
+          meet WCAG 2.1 AA voluntarily.
+        </p>
+
+        <p>
+          Gill Auto Glass Ltd. is committed to making this website usable for everyone, including
+          visitors using screen readers or other assistive technology. If something here gets in
+          your way, we want to know so we can help and fix it.
+        </p>
+
+        <h2>What we aim for</h2>
+        <p>
+          We aim to follow the WCAG 2.1 AA guidelines where practical. In plain terms, that means:
+        </p>
+        <ul>
+          <li><strong>Keyboard navigation</strong>: you can move through the menu, the quote form, the chat helper, and every button using only a keyboard, with a visible outline showing where you are.</li>
+          <li><strong>Alt text on images</strong>: meaningful images carry text descriptions, and purely decorative graphics are hidden from screen readers so they don't add noise.</li>
+          <li><strong>Sufficient colour contrast</strong>: text is set to meet AA contrast on our navy, green, and gold palette.</li>
+          <li><strong>Respecting reduced-motion preferences</strong>: see below.</li>
+        </ul>
+
+        <h2>Motion and animation</h2>
+        <p>
+          The 3D glass animation in the header and the scroll effects automatically switch to a
+          static version for visitors who have reduced motion enabled in their device settings.
+          You do not need to do anything on our site; we read that preference from your device and
+          adjust.
+        </p>
+
+        <h2>If something is hard to use</h2>
+        <p>
+          If any part of the site is difficult to use, contact us at
+          <a href="mailto:gillautoglassyxe@gmail.com">gillautoglassyxe@gmail.com</a> or
+          <a href="tel:+13069148760">306-914-8760</a> (call or text) and we'll help directly or
+          work to fix it. Tell us what you were trying to do and what got in the way, and we'll get
+          back to you same-day or as soon as possible.
+        </p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom" style="margin-top: 0; border-top: 0; padding-top: 0.5rem;">
+      <p>&copy; 2026 Gill Auto Glass Ltd. · Saskatoon, SK · <a href="index.html">gillautoglassyxe.ca</a></p>
+      <p class="footer-domain"><a href="privacy.html">Privacy</a> · <a href="index.html#contact">Contact</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>

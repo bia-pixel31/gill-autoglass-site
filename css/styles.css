@@ -161,6 +161,10 @@ button { font: inherit; cursor: pointer; }
   justify-content: center;
   align-items: center;
   gap: 0.75rem;
+  /* Center wrapped eyebrow lines too (e.g. "MOBILE WINDSHIELD REPLACEMENT"
+     breaking to two lines on mobile). Without this the flex item's text
+     defaults to left, reading as off-center under the centered heading. */
+  text-align: center;
 }
 .eyebrow::before,
 .eyebrow::after {
@@ -174,7 +178,7 @@ button { font: inherit; cursor: pointer; }
 
 /* The hero keeps its own left-aligned identity (headline, sub, CTAs are left),
    so its eyebrow stays left with a single leading rule. */
-.hero .eyebrow { justify-content: flex-start; }
+.hero .eyebrow { justify-content: flex-start; text-align: left; }
 .hero .eyebrow::after { display: none; }
 
 .section-title {
