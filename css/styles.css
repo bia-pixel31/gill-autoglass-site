@@ -950,6 +950,19 @@ h3 { font-family: var(--font-accent); font-weight: 700; font-size: var(--text-h3
   margin: -0.1rem 0 0.6rem;
   max-width: 52ch;
 }
+/* "Can't find your VIN?" jump link, sits under the VIN helper text */
+.vin-faq-link {
+  display: inline-block;
+  margin-top: 0.3rem;
+  font-family: var(--font-accent);
+  font-weight: 600;
+}
+
+/* Briefly flag the FAQ item that was just jumped to, so the answer is obvious */
+.faq-item.faq-flash {
+  outline: 2px solid var(--gold-500);
+  outline-offset: 2px;
+}
 
 /* Radio chips */
 .chip-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }

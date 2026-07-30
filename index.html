@@ -83,6 +83,11 @@
     "mainEntity": [
       {
         "@type": "Question",
+        "name": "Where do I find my VIN?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Your VIN (vehicle identification number) is a 17-character code. The easiest place to find it is on a small plate on the driver's side dashboard, visible through the windshield from outside the car. It's also on your vehicle registration and insurance papers, and usually on the driver's side door jamb." }
+      },
+      {
+        "@type": "Question",
         "name": "How soon can I drive after a windshield replacement?",
         "acceptedAnswer": { "@type": "Answer", "text": "Most adhesives reach safe drive-away strength in roughly 30–60 minutes, but cold weather can extend that. Gill Auto Glass confirms the exact safe drive-away time for your vehicle and the day's conditions before you leave." }
       },
@@ -559,7 +564,9 @@
               <input type="text" id="wzVin" name="vin" autocomplete="off" maxlength="17"
                      placeholder="e.g. 1HGCM82633A004352"
                      aria-describedby="vinHelp">
-              <p class="field-help" id="vinHelp">This speeds up checking if the specific windshield is in stock for your vehicle.</p>
+              <p class="field-help" id="vinHelp">This speeds up checking if the specific windshield is in stock for your vehicle.
+                <a href="#faq-vin" class="vin-faq-link">Can't find your VIN? Check our Good Questions</a>
+              </p>
             </div>
             <p class="wizard-error" data-error-for="1" hidden>Please fill in the year, make, and model.</p>
             <div class="wizard-nav">
@@ -685,6 +692,12 @@
         <h2 class="section-title reveal">Auto glass, answered straight</h2>
 
         <div class="faq-list reveal">
+          <details class="faq-item" id="faq-vin">
+            <summary>Where do I find my VIN?</summary>
+            <div class="faq-body">
+              <p>Your VIN (vehicle identification number) is a 17-character code. The easiest place to find it is on a small plate on the driver's side dashboard, visible through the windshield from outside the car. It's also on your vehicle registration and insurance papers, and usually on the driver's side door jamb.</p>
+            </div>
+          </details>
           <details class="faq-item">
             <summary>How soon can I drive after a windshield replacement?</summary>
             <div class="faq-body">

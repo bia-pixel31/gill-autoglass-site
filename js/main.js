@@ -106,6 +106,29 @@ const CONFIG = {
   })();
 
   /* ------------------------------------------------------------------------
+     FAQ deep-links: opening a <details> FAQ item when jumped to via #anchor
+     (e.g. the "Can't find your VIN?" link in the quote wizard).
+     ------------------------------------------------------------------------ */
+  function openFaqTarget(hash) {
+    if (!hash) return;
+    const el = document.querySelector(hash);
+    if (el && el.tagName === "DETAILS") {
+      el.open = true;
+      // Let the browser settle the anchor jump, then nudge it clear of the nav.
+      window.setTimeout(() => el.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" }), 30);
+      // Briefly outline it so the answer is obvious after the jump.
+      el.classList.add("faq-flash");
+      window.setTimeout(() => el.classList.remove("faq-flash"), 1600);
+    }
+  }
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest('a[href^="#faq-"]');
+    if (link) openFaqTarget(link.getAttribute("href"));
+  });
+  window.addEventListener("hashchange", () => openFaqTarget(window.location.hash));
+  if (window.location.hash.indexOf("#faq-") === 0) openFaqTarget(window.location.hash);
+
+  /* ------------------------------------------------------------------------
      NAV: mobile toggle + close-on-navigate
      ------------------------------------------------------------------------ */
   const navToggle = $("#navToggle");
