@@ -1,5 +1,5 @@
 /* ==========================================================================
-   GILL AUTO GLASS — hero-glass.js
+   GILL AUTO GLASS, hero-glass.js
    Signature 3D element: a windshield "spiderweb" of glass shards that starts
    shattered and resolves into a clean pane as the visitor scrolls
    ("we make it whole again"). Healing runs outside-in, finishing at the
@@ -36,7 +36,7 @@
     camera.position.set(0, 0, 8);
 
     // Soft sky/ground fill so shard faces shade gradually, not flat.
-    // (Doubles as the ambient term — one light fewer per fragment.)
+    // (Doubles as the ambient term, one light fewer per fragment.)
     scene.add(new THREE.HemisphereLight(0xcfe0f2, 0x16281e, 0.95));
     const key = new THREE.DirectionalLight(0xffffff, 0.85);
     key.position.set(2.5, 3, 5);
@@ -45,7 +45,7 @@
     rim.position.set(-3, -2, 4);
     scene.add(rim);
 
-    /* Tiny generated cube env map — gives the glass a believable specular
+    /* Tiny generated cube env map, gives the glass a believable specular
        world (bright sky above, dark prairie below) at negligible cost. */
     function makeEnvMap() {
       const faces = [];
@@ -77,7 +77,7 @@
     const group = new THREE.Group();
     scene.add(group);
 
-    /* Soft contact shadow behind/below the pane — reads as ambient
+    /* Soft contact shadow behind/below the pane, reads as ambient
        occlusion so the glass sits in space instead of floating flat. */
     function shadowTexture() {
       const c = document.createElement("canvas");
@@ -99,7 +99,7 @@
     });
     const shadow = new THREE.Sprite(shadowMat);
     shadow.position.set(0.4, -0.7, -1.1);
-    shadow.scale.set(5.6, 4.4, 1); // kept modest — sprite fill is the costly part
+    shadow.scale.set(5.6, 4.4, 1); // kept modest, sprite fill is the costly part
     group.add(shadow);
 
     /* ---------- build the spiderweb of shards ---------- */
@@ -147,7 +147,7 @@
       const mesh = new THREE.Mesh(geo, shardMaterial);
 
       // Shard edge outline, parented so it moves with the shard.
-      // Kept faint — the fine branching cracks below carry the fracture look.
+      // Kept faint, the fine branching cracks below carry the fracture look.
       const lineGeo = new THREE.BufferGeometry().setFromPoints(rel.concat([rel[0]]));
       const lineMat = new THREE.LineBasicMaterial({
         color: 0xdcecff,
@@ -328,7 +328,7 @@
           s.tumble.y * (1 - local),
           s.tumble.z * (1 - local)
         );
-        // Shard outlines fade as the glass heals (never fully vanish — glass is real).
+        // Shard outlines fade as the glass heals (never fully vanish, glass is real).
         s.lineMat.opacity = 0.3 - 0.27 * local;
       }
 

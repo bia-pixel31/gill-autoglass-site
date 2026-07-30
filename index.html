@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <!--
-  GILL AUTO GLASS — static single-page site (HTML/CSS/JS, no build tools).
+  GILL AUTO GLASS. Static single-page site (HTML/CSS/JS, no build tools).
 
   PRIVACY BY DESIGN:
   - This site sets NO cookies, uses NO analytics, and loads NO third-party
-    trackers — so no cookie consent banner is required. Keep it that way:
+    trackers, so no cookie consent banner is required. Keep it that way:
     if analytics or embeds are ever added, revisit both this note and
     privacy.html.
   - NO payment or checkout code lives here and none should be added. If
     payments are ever taken online, link out to a hosted processor
-    (Square / Stripe payment link) — never collect card data on this site.
-  - Host over HTTPS (Netlify / Vercel — see README.md).
+    (Square / Stripe payment link). Never collect card data on this site.
+  - Host over HTTPS (Netlify / Vercel, see README.md).
 -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Windshield Replacement &amp; Auto Glass Saskatoon | SGI Accredited | Mobile &amp; ADAS | Gill Auto Glass</title>
-  <meta name="description" content="SGI-accredited auto glass specialists in Saskatoon. Mobile windshield replacement — we come to you. In-house ADAS calibration, stone chip repair, free quotes same-day. Call or text 306-914-8760.">
+  <meta name="description" content="SGI-accredited auto glass specialists in Saskatoon. Mobile windshield replacement, we come to you. In-house ADAS calibration, stone chip repair, free quotes same-day. Call or text 306-914-8760.">
   <link rel="canonical" href="https://gillautoglassyxe.ca/">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Gill Auto Glass — SGI-Accredited Windshield &amp; Auto Glass, Saskatoon">
-  <meta property="og:description" content="Mobile windshield replacement across Saskatoon &amp; area. In-house ADAS calibration. SGI glass claims handled directly. Free quotes — call or text 306-914-8760.">
+  <meta property="og:title" content="Gill Auto Glass: SGI-Accredited Windshield &amp; Auto Glass, Saskatoon">
+  <meta property="og:description" content="Mobile windshield replacement across Saskatoon &amp; area. In-house ADAS calibration. SGI glass claims handled directly. Free quotes. Call or text 306-914-8760.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://gillautoglassyxe.ca/">
 
@@ -35,9 +35,9 @@
 
   <!--
     LocalBusiness structured data.
-    NOTE: schema.org has no "AutoGlassShop" type — "AutoRepair" is the closest valid
+    NOTE: schema.org has no "AutoGlassShop" type, so "AutoRepair" is the closest valid
     AutomotiveBusiness subtype, so we use it with an auto-glass description.
-    TODO (OWNER VERIFY before launch): confirm opening DAYS — 8AM-6PM confirmed, days assumed Mon-Sat.
+    Opening hours are generated from CONFIG.hours in js/main.js (Mon to Fri 9 to 6, Sat 10 to 3, Sun closed).
   -->
   <script type="application/ld+json">
   {
@@ -55,19 +55,27 @@
       "addressRegion": "SK",
       "addressCountry": "CA"
     },
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-      "opens": "08:00",
-      "closes": "18:00"
-    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+        "opens": "09:00",
+        "closes": "18:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Saturday"],
+        "opens": "10:00",
+        "closes": "15:00"
+      }
+    ],
     "areaServed": "Saskatoon and surrounding areas, Saskatchewan",
     "priceRange": "$$",
     "knowsAbout": ["Windshield replacement","Auto glass","ADAS calibration","SGI glass claims","Stone chip repair"]
   }
   </script>
 
-  <!-- FAQPage structured data — keep in sync with the visible FAQ section. -->
+  <!-- FAQPage structured data. Keep in sync with the visible FAQ section. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -86,27 +94,27 @@
       {
         "@type": "Question",
         "name": "How do SGI glass claims work?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Gill Auto Glass is SGI accredited for glass and handles SGI glass claims directly — we take care of the paperwork with SGI for you. Your deductible depends on your coverage, including any Auto Pak you carry. Bring your licence plate number and policy info and we'll walk you through it." }
+        "acceptedAnswer": { "@type": "Answer", "text": "Gill Auto Glass is SGI accredited for glass and handles SGI glass claims directly. We take care of the paperwork with SGI for you. Your deductible depends on your coverage, including any Auto Pak you carry. Bring your licence plate number and policy info and we'll walk you through it." }
       },
       {
         "@type": "Question",
-        "name": "Chip repair or full replacement — which do I need?",
+        "name": "Chip repair or full replacement: which do I need?",
         "acceptedAnswer": { "@type": "Answer", "text": "Small chips (roughly a quarter or smaller) away from the edges and out of the driver's direct line of sight can usually be repaired in under an hour. Long cracks, chips at the edge of the glass, or damage in the driver's view usually mean replacement. Send us a photo by text and we'll tell you which." }
       },
       {
         "@type": "Question",
         "name": "Do you offer mobile service?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Yes — we come to you across Saskatoon and surrounding areas. Home, work, or anywhere your vehicle is parked with room to work." }
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes, we come to you across Saskatoon and surrounding areas. Home, work, or anywhere your vehicle is parked with room to work." }
       },
       {
         "@type": "Question",
         "name": "How fast can you get me in?",
-        "acceptedAnswer": { "@type": "Answer", "text": "We quote same-day or as soon as possible, and glass availability sets the schedule. Call or text 306-914-8760 anytime for a time estimate — texting is welcome." }
+        "acceptedAnswer": { "@type": "Answer", "text": "We quote same-day or as soon as possible, and glass availability sets the schedule. Call or text 306-914-8760 anytime for a time estimate. Texting is welcome." }
       },
       {
         "@type": "Question",
         "name": "What is ADAS calibration and do I need it?",
-        "acceptedAnswer": { "@type": "Answer", "text": "ADAS (advanced driver-assistance systems) are the cameras and sensors — often mounted near the windshield — behind features like lane-keep assist and automatic emergency braking. Many newer vehicles need those cameras recalibrated after a windshield replacement so they aim correctly. Gill Auto Glass calibrates in-shop or at your location — mobile ADAS calibration across Saskatoon and surrounding areas — so you're not sent to a second shop." }
+        "acceptedAnswer": { "@type": "Answer", "text": "ADAS (advanced driver-assistance systems) are the cameras and sensors, often mounted near the windshield, behind features like lane-keep assist and automatic emergency braking. Many newer vehicles need those cameras recalibrated after a windshield replacement so they aim correctly. Gill Auto Glass calibrates in-shop or at your location. Mobile ADAS calibration across Saskatoon and surrounding areas means you're not sent to a second shop." }
       }
     ]
   }
@@ -122,7 +130,7 @@
   <header class="site-nav" id="siteNav">
     <div class="nav-inner">
       <!-- TODO: replace wordmark with owner's vector logo when available. -->
-      <a href="#home" class="wordmark" aria-label="Gill Auto Glass — home">
+      <a href="#home" class="wordmark" aria-label="Gill Auto Glass home">
         GILL AUTO <span class="wordmark-accent">GLASS</span>
       </a>
 
@@ -150,7 +158,7 @@
   <main id="main">
 
     <!-- ============================================================
-         1. HERO — 3D glass effect + SGI + mobile-first headline
+         1. HERO. 3D glass effect, SGI, mobile-first headline
          ============================================================ -->
     <section class="hero" id="home">
       <!-- Three.js canvas mounts here; reduced-motion / no-WebGL users get the static fallback below. -->
@@ -180,14 +188,14 @@
       <div class="hero-content">
         <p class="eyebrow eyebrow-light">SGI Accredited for Glass · Saskatoon</p>
         <h1 class="hero-title">
-          Cracked windshield?<br>
-          <em>We make it whole again</em> — and we come to you.
+          Cracked windshield?
+          <span class="hero-title-sub"><em>We make it whole again.</em> And we come to you.</span>
         </h1>
         <p class="hero-sub">
           Gill Auto Glass is an SGI-accredited glass specialist serving Saskatoon and
           surrounding areas. Mobile windshield replacement at your home or work,
           ADAS calibration in-shop or at your location, and SGI claims handled
-          directly — free quotes same-day or as soon as possible.
+          directly. Free quotes same-day or as soon as possible.
         </p>
         <div class="hero-ctas">
           <a href="#quote" class="btn btn-gold btn-lg">Get My Free Quote</a>
@@ -195,6 +203,15 @@
         </div>
 
         <ul class="trust-badges" aria-label="Why choose Gill Auto Glass">
+          <!-- Official SGI Preferred Partner logo. Displayed as-is (no recolour/alter).
+               TODO (OWNER): upload the logo to assets/photos/sgi-preferred-partner.png.
+               Until it exists, this badge auto-hides via the onerror handler. -->
+          <li class="trust-badge-logo">
+            <img src="assets/photos/sgi-preferred-partner.png"
+                 alt="SGI Preferred Partner"
+                 loading="lazy" decoding="async"
+                 onerror="this.closest('li').hidden = true;">
+          </li>
           <li>
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.4-7 10-4-1.6-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4.5"/></svg>
             <span>SGI Accredited</span>
@@ -213,11 +230,6 @@
           </li>
         </ul>
       </div>
-
-      <div class="hero-scroll-hint" aria-hidden="true">
-        <span>Scroll — watch the glass come back together</span>
-        <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
-      </div>
     </section>
 
     <!-- ============================================================
@@ -230,7 +242,7 @@
         <h2 class="section-title reveal">One shop, every pane on your vehicle</h2>
         <p class="section-lede reveal">
           We're glass specialists, not a general repair shop with a glass rack in the back.
-          Every service below is quoted free — same-day or as soon as possible.
+          Every service below is quoted free, same-day or as soon as possible.
         </p>
 
         <!-- Editorial index, not a card grid: number / service / icon -->
@@ -247,7 +259,7 @@
             <span class="service-num" aria-hidden="true">02</span>
             <div class="service-row-main">
               <h3>Door Glass Replacement</h3>
-              <p>Break-in or blown regulator — we replace side glass and vacuum out every last cube from the door and carpet.</p>
+              <p>Break-in or blown regulator, so we replace side glass and vacuum out every last cube from the door and carpet.</p>
             </div>
             <svg class="icon icon-lg service-row-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l3-6h10l3 6v8H4z"/><path d="M4 11h16M8 15h2"/></svg>
           </li>
@@ -255,7 +267,7 @@
             <span class="service-num" aria-hidden="true">03</span>
             <div class="service-row-main">
               <h3>Back Window Replacement</h3>
-              <p>Rear glass with defroster lines reconnected and tested — heat, wipers and antennas working before handover.</p>
+              <p>Rear glass with defroster lines reconnected and tested. Heat, wipers and antennas working before handover.</p>
             </div>
             <svg class="icon icon-lg service-row-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14l2 12H3z"/><path d="M7 9h10M6.2 12h11.6M5.6 15h12.8"/></svg>
           </li>
@@ -271,7 +283,7 @@
             <span class="service-num" aria-hidden="true">05</span>
             <div class="service-row-main">
               <h3>ADAS Calibration</h3>
-              <p>Windshield cameras recalibrated after replacement — in-shop or at your location, never a second appointment at another shop. <a href="#adas">How it works</a>.</p>
+              <p>Windshield cameras recalibrated after replacement, in-shop or at your location, never a second appointment at another shop. <a href="#adas">How it works</a>.</p>
             </div>
             <svg class="icon icon-lg service-row-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 5V3M12 21v-2M5 12H3M21 12h-2M6.6 6.6L5.2 5.2M18.8 18.8l-1.4-1.4M17.4 6.6l1.4-1.4M5.2 18.8l1.4-1.4"/></svg>
           </li>
@@ -279,7 +291,7 @@
             <span class="service-num" aria-hidden="true">06</span>
             <div class="service-row-main">
               <h3>Aquapel Glass Treatment</h3>
-              <p>A professional rain-repellent treatment that makes water bead and sheet off — clearer vision in prairie downpours and slush.</p>
+              <p>A professional rain-repellent treatment that makes water bead and sheet off, for clearer vision in prairie downpours and slush.</p>
             </div>
             <svg class="icon icon-lg service-row-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s6 6.6 6 11a6 6 0 01-12 0c0-4.4 6-11 6-11z"/><path d="M9.5 14a2.5 2.5 0 002.5 2.5"/></svg>
           </li>
@@ -304,7 +316,7 @@
     </section>
 
     <!-- ============================================================
-         3. MOBILE SERVICE — "we come to you"
+         3. MOBILE SERVICE ("we come to you")
          ============================================================ -->
     <section class="section section-green section--vast" id="mobile">
       <div class="container align-right">
@@ -312,14 +324,14 @@
         <h2 class="section-title reveal">Your driveway is our shop</h2>
         <p class="section-lede reveal">
           No shuttle, no waiting room, no burning a vacation day. We bring the glass, the
-          tools, and the adhesive to you — anywhere in Saskatoon and surrounding areas.
+          tools, and the adhesive to you, anywhere in Saskatoon and surrounding areas.
         </p>
 
         <ol class="steps-row">
           <li class="step-card reveal">
             <span class="step-num" aria-hidden="true">1</span>
             <h3>Call, text, or use the wizard</h3>
-            <p>Tell us the vehicle and the glass. Photos by text help us quote fast — free, same-day or as soon as possible.</p>
+            <p>Tell us the vehicle and the glass. Photos by text help us quote fast. Free, same-day or as soon as possible.</p>
           </li>
           <li class="step-card reveal">
             <span class="step-num" aria-hidden="true">2</span>
@@ -329,13 +341,13 @@
           <li class="step-card reveal">
             <span class="step-num" aria-hidden="true">3</span>
             <h3>Drive when it's safe</h3>
-            <p>We confirm your exact safe drive-away time on the spot — and if your vehicle needs ADAS calibration, we can do that at your location too.</p>
+            <p>We confirm your exact safe drive-away time on the spot. And if your vehicle needs ADAS calibration, we can do that at your location too.</p>
           </li>
         </ol>
 
         <div class="section-cta reveal">
           <a href="#quote" class="btn btn-gold btn-lg">Book Mobile Service</a>
-          <p class="cta-aside">Prefer to ask first? <a href="sms:+13069148760">Text 306-914-8760</a> — we answer texts.</p>
+          <p class="cta-aside">Prefer to ask first? <a href="sms:+13069148760">Text 306-914-8760</a>. We answer texts.</p>
         </div>
       </div>
     </section>
@@ -346,23 +358,23 @@
     <section class="section section-paper" id="adas">
       <div class="container split">
         <div class="split-text">
-          <p class="eyebrow reveal">ADAS Calibration — In-House</p>
+          <p class="eyebrow reveal">ADAS Calibration, In-House & Mobile</p>
           <h2 class="section-title reveal">The camera behind your mirror needs to know where it's pointing</h2>
           <div class="reveal">
             <p>
               If your vehicle has lane-keep assist, automatic emergency braking, or adaptive
               cruise, there's a good chance a camera sits right behind your windshield near
-              the rear-view mirror. That's <strong>ADAS</strong> — advanced driver-assistance
-              systems — and it's aimed through the glass.
+              the rear-view mirror. That's <strong>ADAS</strong>, advanced driver-assistance
+              systems, and it's aimed through the glass.
             </p>
             <p>
-              Replace the windshield and that aim can shift by fractions of a degree — enough
+              Replace the windshield and that aim can shift by fractions of a degree, enough
               to make safety systems read the road wrong. That's why many newer vehicles
               <strong>require recalibration after a windshield replacement</strong>.
             </p>
             <p>
               Most glass shops in town send you elsewhere for that step. <strong>Gill Auto Glass
-              calibrates in-house — and at your location</strong>, with mobile ADAS calibration
+              calibrates in-house and at your location</strong>, with mobile ADAS calibration
               across Saskatoon and surrounding areas. One appointment, systems verified before
               you drive away.
             </p>
@@ -399,17 +411,17 @@
           <div class="reveal">
             <p>
               Gill Auto Glass is <strong>SGI accredited for glass</strong>. That means we deal
-              with SGI directly on your glass claim — we submit it, we bill it, and you don't
+              with SGI directly on your glass claim. We submit it, we bill it, and you don't
               spend your lunch break on hold.
             </p>
             <ul class="check-list">
               <li>We open and handle the SGI glass claim for you, start to finish.</li>
-              <li>Your deductible depends on your coverage — an <strong>Auto Pak</strong> can lower it or bring it to zero for glass. We check what you carry.</li>
+              <li>Your deductible depends on your coverage. An <strong>Auto Pak</strong> can lower it or bring it to zero for glass. We check what you carry.</li>
               <li>Bring your licence plate number and policy info; that's usually all we need.</li>
               <li>Chip repairs are often covered with no out-of-pocket cost.</li>
             </ul>
             <p class="fine-print">
-              Deductibles and coverage vary by policy — we'll confirm yours before any work starts.
+              Deductibles and coverage vary by policy. We'll confirm yours before any work starts.
             </p>
           </div>
           <div class="section-cta reveal">
@@ -442,7 +454,7 @@
           <div class="reveal">
             <p>
               Glass shrinks in the cold. Every deep freeze, every blast of the defroster on an
-              ice-cold windshield, puts stress across the pane — and a stone chip is exactly
+              ice-cold windshield, puts stress across the pane, and a stone chip is exactly
               where that stress lets go.
             </p>
             <blockquote class="pull-quote">
@@ -461,7 +473,7 @@
             </div>
             <div class="winter-point">
               <span class="winter-point-figure">&lt;1 hr</span>
-              <p>Typical stone chip repair — usually while you wait, in-shop or mobile.</p>
+              <p>Typical stone chip repair, usually while you wait, in-shop or mobile.</p>
             </div>
           </div>
         </div>
@@ -482,7 +494,7 @@
         <p class="eyebrow eyebrow-light reveal">Free Quote</p>
         <h2 class="section-title reveal">Three quick steps. No obligation.</h2>
         <p class="section-lede reveal">
-          Tell us about the vehicle and the glass — we'll reply same-day or as soon as
+          Tell us about the vehicle and the glass. We'll reply same-day or as soon as
           possible. Prefer talking? <a href="tel:+13069148760">Call</a> or
           <a href="sms:+13069148760">text 306-914-8760</a> anytime.
         </p>
@@ -498,7 +510,7 @@
 
           <!-- STEP 1: Vehicle -->
           <fieldset class="wizard-step is-active" data-step="1">
-            <legend>Step 1 — Your vehicle</legend>
+            <legend>Step 1: Your vehicle</legend>
             <div class="field-row">
               <div class="field">
                 <label for="wzYear">Year <span class="req" aria-hidden="true">*</span></label>
@@ -542,7 +554,7 @@
 
           <!-- STEP 2: Glass -->
           <fieldset class="wizard-step" data-step="2" hidden>
-            <legend>Step 2 — The glass</legend>
+            <legend>Step 2: The glass</legend>
             <div class="field">
               <span class="field-label" id="lblGlass">Which glass needs work? <span class="req" aria-hidden="true">*</span></span>
               <div class="chip-group" role="radiogroup" aria-labelledby="lblGlass">
@@ -557,7 +569,7 @@
               <span class="field-label" id="lblAdas">Any camera or sensors near the rear-view mirror?</span>
               <p class="field-help">
                 Look behind the mirror for a small camera box or dotted patch on the glass. If your car
-                has lane-keep assist or automatic braking, the answer is probably yes — it may need
+                has lane-keep assist or automatic braking, the answer is probably yes, and it may need
                 <a href="#adas">ADAS calibration</a> after replacement (we calibrate in-shop or at your location).
               </p>
               <div class="chip-group" role="radiogroup" aria-labelledby="lblAdas">
@@ -569,7 +581,7 @@
             <div class="field">
               <span class="field-label" id="lblWhere">Mobile or in-shop?</span>
               <div class="chip-group" role="radiogroup" aria-labelledby="lblWhere">
-                <label class="chip"><input type="radio" name="serviceLocation" value="Mobile — come to me" checked><span>Mobile — come to me</span></label>
+                <label class="chip"><input type="radio" name="serviceLocation" value="Mobile, come to me" checked><span>Mobile, come to me</span></label>
                 <label class="chip"><input type="radio" name="serviceLocation" value="In-shop"><span>In-shop</span></label>
                 <label class="chip"><input type="radio" name="serviceLocation" value="Either"><span>Either works</span></label>
               </div>
@@ -583,7 +595,7 @@
 
           <!-- STEP 3: Contact -->
           <fieldset class="wizard-step" data-step="3" hidden>
-            <legend>Step 3 — How do we reach you?</legend>
+            <legend>Step 3: How do we reach you?</legend>
             <div class="field-row">
               <div class="field">
                 <label for="wzName">Name <span class="req" aria-hidden="true">*</span></label>
@@ -626,7 +638,7 @@
               <button type="submit" class="btn btn-gold">Send My Quote Request</button>
             </div>
             <p class="field-help wizard-mailto-note">
-              Submitting opens a pre-filled email to gillautoglassyxe@gmail.com in your mail app —
+              Submitting opens a pre-filled email to gillautoglassyxe@gmail.com in your mail app.
               review it and hit send. Or skip the form entirely and
               <a href="sms:+13069148760">text us</a>.
             </p>
@@ -635,14 +647,14 @@
           <!-- SUCCESS -->
           <div class="wizard-success" id="wizardSuccess" hidden tabindex="-1">
             <svg class="icon icon-lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
-            <h3>Request ready — check your email app</h3>
+            <h3>Request ready: check your email app</h3>
             <p>
               Your pre-filled quote request just opened in your mail app. Hit send and we'll get
               back to you <strong>same-day or as soon as possible</strong> with a free quote.
             </p>
             <p>
               Nothing opened? Email <a href="mailto:gillautoglassyxe@gmail.com">gillautoglassyxe@gmail.com</a>
-              or call / text <a href="tel:+13069148760"><strong>306-914-8760</strong></a> — texts welcome, anytime.
+              or call / text <a href="tel:+13069148760"><strong>306-914-8760</strong></a>. Texts welcome, anytime.
             </p>
             <button type="button" class="btn btn-ghost" id="wizardRestart">Start another request</button>
           </div>
@@ -651,7 +663,7 @@
     </section>
 
     <!-- ============================================================
-         8. FAQ (accordion — keep in sync with FAQPage JSON-LD in <head>)
+         8. FAQ (accordion; keep in sync with FAQPage JSON-LD in <head>)
          ============================================================ -->
     <section class="section section-paper section--tight" id="faq">
       <div class="container container-narrow container-right">
@@ -662,7 +674,7 @@
           <details class="faq-item">
             <summary>How soon can I drive after a windshield replacement?</summary>
             <div class="faq-body">
-              <p>Most adhesives reach safe drive-away strength in roughly <strong>30–60 minutes</strong>, but cold weather can stretch that out. We confirm the exact safe drive-away time for your vehicle, your adhesive, and the day's temperature before you leave — no guessing.</p>
+              <p>Most adhesives reach safe drive-away strength in roughly <strong>30–60 minutes</strong>, but cold weather can stretch that out. We confirm the exact safe drive-away time for your vehicle, your adhesive, and the day's temperature before you leave. No guessing.</p>
             </div>
           </details>
           <details class="faq-item">
@@ -672,7 +684,7 @@
                 <li>Leave the retention tape on for about <strong>24 hours</strong>.</li>
                 <li>Crack a window slightly the first day to relieve cabin pressure.</li>
                 <li>Skip the car wash for <strong>24–48 hours</strong>.</li>
-                <li>Close doors gently — no slamming while the adhesive cures.</li>
+                <li>Close doors gently, with no slamming while the adhesive cures.</li>
               </ul>
             </div>
           </details>
@@ -680,11 +692,11 @@
             <!-- TODO (OWNER VERIFY before launch): confirm claim wording. -->
             <summary>How do SGI glass claims work?</summary>
             <div class="faq-body">
-              <p>We're SGI accredited for glass, so we handle the claim directly — paperwork, billing, all of it. Your deductible depends on your coverage (an Auto Pak can reduce it, sometimes to zero for glass). Bring your plate number and policy info and we'll take it from there. <a href="#sgi">More on claims</a>.</p>
+              <p>We're SGI accredited for glass, so we handle the claim directly. Paperwork, billing, all of it. Your deductible depends on your coverage (an Auto Pak can reduce it, sometimes to zero for glass). Bring your plate number and policy info and we'll take it from there. <a href="#sgi">More on claims</a>.</p>
             </div>
           </details>
           <details class="faq-item">
-            <summary>Chip repair or full replacement — which do I need?</summary>
+            <summary>Chip repair or full replacement: which do I need?</summary>
             <div class="faq-body">
               <p>Rule of thumb: a chip <strong>smaller than a quarter</strong>, away from the edges and out of your direct line of sight, can usually be repaired in under an hour. Long cracks, edge damage, or anything in the driver's view usually means replacement. Not sure? <a href="sms:+13069148760">Text us a photo</a> and we'll tell you straight.</p>
             </div>
@@ -692,19 +704,19 @@
           <details class="faq-item">
             <summary>Do you offer mobile service?</summary>
             <div class="faq-body">
-              <p>Yes — <strong>we come to you</strong> across Saskatoon and surrounding areas. Home, work, or anywhere the vehicle is parked with room to work. <a href="#mobile">How mobile service works</a>.</p>
+              <p>Yes, <strong>we come to you</strong> across Saskatoon and surrounding areas. Home, work, or anywhere the vehicle is parked with room to work. <a href="#mobile">How mobile service works</a>.</p>
             </div>
           </details>
           <details class="faq-item">
             <summary>How fast can you get me in?</summary>
             <div class="faq-body">
-              <p>We quote <strong>same-day or as soon as possible</strong>; scheduling depends on glass availability for your vehicle. Call or text <a href="tel:+13069148760">306-914-8760</a> anytime for a time estimate — don't like calls? Text works.</p>
+              <p>We quote <strong>same-day or as soon as possible</strong>; scheduling depends on glass availability for your vehicle. Call or text <a href="tel:+13069148760">306-914-8760</a> anytime for a time estimate. Don't like calls? Text works.</p>
             </div>
           </details>
           <details class="faq-item">
             <summary>What is ADAS calibration and do I need it?</summary>
             <div class="faq-body">
-              <p>ADAS is the set of cameras and sensors behind features like lane-keep assist and automatic emergency braking — often mounted right behind the windshield. Many newer vehicles need those cameras <strong>recalibrated after a windshield swap</strong> so they aim true. We calibrate <strong>in-shop or at your location</strong> — mobile calibration across Saskatoon and surrounding areas — so it happens in the same visit. <a href="#adas">Plain-English explanation</a>.</p>
+              <p>ADAS is the set of cameras and sensors behind features like lane-keep assist and automatic emergency braking, often mounted right behind the windshield. Many newer vehicles need those cameras <strong>recalibrated after a windshield swap</strong> so they aim true. We calibrate <strong>in-shop or at your location</strong>. Mobile calibration across Saskatoon and surrounding areas means it happens in the same visit. <a href="#adas">Plain-English explanation</a>.</p>
             </div>
           </details>
         </div>
@@ -720,7 +732,7 @@
       <div class="container">
         <p class="eyebrow eyebrow-light reveal">Resources</p>
         <h2 class="section-title reveal">Know your glass</h2>
-        <p class="section-lede reveal">Short, honest reads — no jargon, no upsell.</p>
+        <p class="section-lede reveal">Short, honest reads. No jargon, no upsell.</p>
 
         <div class="resources-grid">
           <article class="resource-card reveal">
@@ -731,8 +743,8 @@
               <summary>Read the article</summary>
               <div class="resource-body">
                 <p>A stone chip repair injects clear resin into the damage, restoring most of the strength and clarity of the glass. It takes under an hour, keeps your factory seal, and through SGI it often costs you nothing.</p>
-                <p>Repair works when the chip is roughly quarter-sized or smaller, sits away from the edges of the glass, and isn't directly in the driver's line of sight. Edge chips and long cracks compromise the structure of the pane — that's replacement territory.</p>
-                <p>Here's the honest part: a repaired chip will usually still be faintly visible. What you're buying is strength and a stopped crack, not invisibility. If a mark in your sightline would bother you, tell us — we'll talk through both options with real numbers before you decide.</p>
+                <p>Repair works when the chip is roughly quarter-sized or smaller, sits away from the edges of the glass, and isn't directly in the driver's line of sight. Edge chips and long cracks compromise the structure of the pane. That's replacement territory.</p>
+                <p>Here's the honest part: a repaired chip will usually still be faintly visible. What you're buying is strength and a stopped crack, not invisibility. If a mark in your sightline would bother you, tell us. We'll talk through both options with real numbers before you decide.</p>
               </div>
             </details>
           </article>
@@ -745,8 +757,8 @@
               <summary>Read the article</summary>
               <div class="resource-body">
                 <!-- TODO (OWNER VERIFY before launch): confirm claim wording. -->
-                <p>Because Gill Auto Glass is SGI accredited for glass, we can open and process your glass claim directly with SGI — you don't file anything yourself, and we bill SGI rather than sending the full cost to you.</p>
-                <p>What you pay out of pocket is your deductible, and it depends on your coverage. A basic plate policy has a set deductible; an Auto Pak add-on can lower it — for glass, sometimes to zero. We check your coverage as part of the claim so there are no surprises.</p>
+                <p>Because Gill Auto Glass is SGI accredited for glass, we can open and process your glass claim directly with SGI. You don't file anything yourself, and we bill SGI rather than sending the full cost to you.</p>
+                <p>What you pay out of pocket is your deductible, and it depends on your coverage. A basic plate policy has a set deductible; an Auto Pak add-on can lower it, for glass sometimes to zero. We check your coverage as part of the claim so there are no surprises.</p>
                 <p>To get started, have your licence plate number and policy or registration info handy, and know roughly where the damage is (a photo by text is perfect). That's genuinely all it takes.</p>
               </div>
             </details>
@@ -759,7 +771,7 @@
             <details class="resource-more">
               <summary>Read the article</summary>
               <div class="resource-body">
-                <p>Glass contracts as it cools. When a windshield drops to -30&deg;C overnight, the whole pane is under tension — and a stone chip is a ready-made weak point where that tension can tear the glass into a running crack.</p>
+                <p>Glass contracts as it cools. When a windshield drops to -30&deg;C overnight, the whole pane is under tension, and a stone chip is a ready-made weak point where that tension can tear the glass into a running crack.</p>
                 <p>The most common trigger is the morning defroster: blasting hot air at the inside of an ice-cold windshield creates a sharp temperature difference between the inner and outer glass layers. On an intact pane it's fine. On a chipped one, it's often the moment the crack lets go.</p>
                 <p>The play is simple: repair chips in the fall, before the first hard freeze. It's under an hour, often free through SGI, and it turns a future replacement back into a non-event. If winter beat you to it, start the defroster on low and warm the glass gradually until you can get it looked at.</p>
               </div>
@@ -770,7 +782,7 @@
     </section>
 
     <!-- ============================================================
-         10. REVIEWS — HIDDEN until real Google reviews are available.
+         10. REVIEWS. HIDDEN until real Google reviews are available.
          The whole section is commented out so nothing renders and no
          invented testimonials are visible. The "Review Us on Google"
          button lives in the Contact section instead.
@@ -780,7 +792,7 @@
            2. Add `<a href="#reviews">Reviews</a>` back to the nav and footer.
            3. Replace the template card below with genuine Google reviews
               (real quote + real first name/initial + city). Do NOT invent
-              testimonials — only paste reviews customers actually left.
+              testimonials. Only paste reviews customers actually left.
          The .review-card / .reviews-grid CSS is retained in styles.css.
     -->
     <!--
@@ -791,12 +803,12 @@
         <p class="section-lede reveal">What Saskatoon drivers say after a visit.</p>
 
         <div class="reviews-grid">
-          &lt;!-- TEMPLATE CARD — duplicate per real review; fill with a genuine
+          &lt;!-- TEMPLATE CARD: duplicate per real review; fill with a genuine
                Google review only. Never fabricate. --&gt;
           <figure class="review-card reveal">
             <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
             <blockquote>REAL REVIEW TEXT HERE</blockquote>
-            <figcaption>REAL NAME/INITIAL — CITY</figcaption>
+            <figcaption>REAL NAME/INITIAL, CITY</figcaption>
           </figure>
         </div>
 
@@ -819,7 +831,7 @@
           <div class="contact-lines reveal">
             <p class="contact-line">
               <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h4l1.5 5-2.5 2a13 13 0 005 5l2-2.5 5 1.5v4a2 2 0 01-2 2A17 17 0 014 5a2 2 0 012-2z"/></svg>
-              <span><a href="tel:+13069148760">306-914-8760</a> — call or text. Don't like calls? <a href="sms:+13069148760">Text us.</a></span>
+              <span><a href="tel:+13069148760">306-914-8760</a>. Call or text. Don't like calls? <a href="sms:+13069148760">Text us.</a></span>
             </p>
             <p class="contact-line">
               <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg>
@@ -834,18 +846,18 @@
             </p>
             <p class="contact-line">
               <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
-              <span>Open 8 AM – 6 PM <!-- TODO (OWNER VERIFY): confirm which days --></span>
+              <span class="hours-block" data-hours><!-- hours injected from CONFIG.hours --></span>
             </p>
             <p class="contact-line">
               <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 16V8a1 1 0 011-1h9v9"/><path d="M12 9h5l3 4v3h-2"/><circle cx="6.5" cy="17" r="1.8"/><circle cx="16.5" cy="17" r="1.8"/><path d="M8.3 17h6.4M2 16h2.7M18.3 17H20a1 1 0 001-1v-2"/></svg>
-              <span>Serving <strong>Saskatoon and surrounding areas</strong> — mobile service available.</span>
+              <span>Serving <strong>Saskatoon and surrounding areas</strong>. Mobile service available.</span>
             </p>
           </div>
         </div>
         <div class="split-visual reveal">
           <figure class="contact-photo">
             <img src="assets/photos/workshop-entrance.jpg"
-                 alt="Customer entrance at 418C 47th Street E, Saskatoon — look for the 418-C door"
+                 alt="Customer entrance at 418C 47th Street E, Saskatoon. Look for the 418-C door"
                  loading="lazy" width="1148" height="2040">
             <figcaption>The customer entrance on 47th Street E</figcaption>
           </figure>
@@ -889,7 +901,7 @@
         <p><a href="tel:+13069148760">306-914-8760</a> (call or text)</p>
         <p><a href="mailto:gillautoglassyxe@gmail.com">gillautoglassyxe@gmail.com</a></p>
         <p>418C 47th Street E, Saskatoon SK</p>
-        <p>Open 8 AM – 6 PM</p>
+        <div class="footer-hours" data-hours><!-- hours injected from CONFIG.hours --></div>
       </div>
       <div class="footer-social">
         <h3>Follow</h3>
@@ -940,7 +952,7 @@
 
   <!-- Rule-based chatbot (no external API) -->
   <div class="chatbot" id="chatbot">
-    <button class="chatbot-launcher" id="chatbotLauncher" aria-expanded="false" aria-controls="chatbotPanel" aria-label="Open chat — quick answers">
+    <button class="chatbot-launcher" id="chatbotLauncher" aria-expanded="false" aria-controls="chatbotPanel" aria-label="Open chat for quick answers">
       <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 01-8 8H4l2-3a8 8 0 1115-5z"/><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"/></svg>
     </button>
     <div class="chatbot-panel" id="chatbotPanel" role="dialog" aria-label="Quick answers chat" hidden>

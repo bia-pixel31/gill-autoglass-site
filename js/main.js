@@ -1,11 +1,11 @@
 /* ==========================================================================
-   GILL AUTO GLASS — main.js
+   GILL AUTO GLASS. main.js
    Sections: CONFIG · helpers · nav · scroll reveals · wizard · chatbot ·
              back-to-top · deferred 3D hero loader
    No build tools; GSAP + ScrollTrigger loaded from CDN (deferred).
 
    PRIVACY: this script sets NO cookies and uses NO storage (no
-   localStorage/sessionStorage), no analytics, no tracking — which is why the
+   localStorage/sessionStorage), no analytics, no tracking, which is why the
    site needs no cookie consent banner. The chatbot is rule-based and runs
    entirely in the browser; nothing typed into it is recorded or transmitted.
    ========================================================================== */
@@ -13,7 +13,7 @@
 /* --------------------------------------------------------------------------
    EDIT BUSINESS INFO HERE
    One place for every business fact used by the scripts (mailto, chatbot,
-   tel/sms links). The same facts appear as visible text in index.html —
+   tel/sms links). The same facts appear as visible text in index.html;
    if a fact changes, update it here AND find-replace it in index.html.
    -------------------------------------------------------------------------- */
 const CONFIG = {
@@ -23,11 +23,27 @@ const CONFIG = {
   phoneE164: "+13069148760",          // used for tel: and sms: links
   email: "gillautoglassyxe@gmail.com",
   address: "418C 47th Street E, Saskatoon SK",
-  hours: "8 AM – 6 PM",           // TODO (OWNER VERIFY): confirm which days
+  // HOURS live here and ONLY here. Every visible mention, the chatbot, and the
+  // LocalBusiness schema are generated from this on page load. Edit here only.
+  hours: {
+    // Human-readable lines (rendered in footer + contact)
+    lines: [
+      { days: "Monday to Friday", time: "9 AM to 6 PM" },
+      { days: "Saturday", time: "10 AM to 3 PM" },
+      { days: "Sunday", time: "Closed" }
+    ],
+    // One-line summary for the chatbot
+    summary: "Monday to Friday 9 AM to 6 PM, Saturday 10 AM to 3 PM, Sunday closed",
+    // Machine hours for JSON-LD openingHoursSpecification (24h clock)
+    schema: [
+      { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "18:00" },
+      { days: ["Saturday"], opens: "10:00", closes: "15:00" }
+    ]
+  },
   serviceArea: "Saskatoon and surrounding areas",
   domain: "gillautoglassyxe.ca",
   mapsUrl: "https://maps.app.goo.gl/jPs7yCjwYFLKRCR47",
-  responsePromise: "Free quotes same-day or as soon as possible — call or text anytime for a time estimate.",
+  responsePromise: "Free quotes same-day or as soon as possible. Call or text anytime for a time estimate.",
   googleReviewUrl: "https://share.google/PiUqJ9A77EirJnChJ",
   facebookUrl: "https://www.facebook.com/profile.php?id=61591856556349",
   // TODO: replace # with real Instagram / X profile URLs.
@@ -56,6 +72,38 @@ const CONFIG = {
   });
   const yearEl = $("#footerYear");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+  /* ------------------------------------------------------------------------
+     HOURS: render from CONFIG.hours into every [data-hours] element, and
+     patch the LocalBusiness JSON-LD so CONFIG is the single source of truth.
+     ------------------------------------------------------------------------ */
+  (function renderHours() {
+    const linesHtml = CONFIG.hours.lines
+      .map((l) => '<span class="hours-day">' + l.days + '</span><span class="hours-time">' + l.time + "</span>")
+      .join("");
+    $$("[data-hours]").forEach((el) => {
+      if (el.dataset.hours === "summary") {
+        el.textContent = CONFIG.hours.summary;
+      } else {
+        el.innerHTML = linesHtml;
+      }
+    });
+
+    // Rewrite openingHoursSpecification in the LocalBusiness JSON-LD block.
+    const spec = CONFIG.hours.schema.map((s) => ({
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: s.days, opens: s.opens, closes: s.closes
+    }));
+    $$('script[type="application/ld+json"]').forEach((node) => {
+      try {
+        const data = JSON.parse(node.textContent);
+        if (data && /AutoRepair|LocalBusiness/.test(data["@type"] || "")) {
+          data.openingHoursSpecification = spec;
+          node.textContent = JSON.stringify(data);
+        }
+      } catch (err) { /* leave static JSON-LD as-is on parse error */ }
+    });
+  })();
 
   /* ------------------------------------------------------------------------
      NAV: mobile toggle + close-on-navigate
@@ -101,7 +149,7 @@ const CONFIG = {
     });
     // Elements already in view on load reveal immediately via the same batch.
 
-    // Lazy images can nudge layout as they decode — keep trigger positions fresh.
+    // Lazy images can nudge layout as they decode, so keep trigger positions fresh.
     $$('img[loading="lazy"]').forEach((img) => {
       if (!img.complete) {
         img.addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
@@ -179,7 +227,7 @@ const CONFIG = {
   });
 
   function buildMailto() {
-    const line = (label, value) => label + ": " + (value || "—");
+    const line = (label, value) => label + ": " + (value || "n/a");
     const body = [
       "Quote request from " + CONFIG.domain,
       "",
@@ -206,7 +254,7 @@ const CONFIG = {
 
     const vehicle = [$("#wzYear").value.trim(), $("#wzMake").value.trim(), $("#wzModel").value.trim()]
       .filter(Boolean).join(" ");
-    const subject = "Free quote request — " + vehicle + " (" + (radioValue("glass") || "glass") + ")";
+    const subject = "Free quote request for " + vehicle + " (" + (radioValue("glass") || "glass") + ")";
 
     return "mailto:" + CONFIG.email +
       "?subject=" + encodeURIComponent(subject) +
@@ -262,12 +310,12 @@ const CONFIG = {
   });
 
   /* ------------------------------------------------------------------------
-     CHATBOT — rule-based keyword answers, no external API
+     CHATBOT: rule-based keyword answers, no external API
      ------------------------------------------------------------------------ */
   const botRules = [
     {
       keys: ["hour", "open", "close", "when are you", "what time"],
-      answer: "We're open " + CONFIG.hours + ". " + CONFIG.responsePromise
+      answer: "Our hours: " + CONFIG.hours.summary + ". " + CONFIG.responsePromise
     },
     {
       keys: ["where", "location", "address", "find you", "directions"],
@@ -275,19 +323,19 @@ const CONFIG = {
     },
     {
       keys: ["mobile", "come to", "at my", "my house", "my work", "driveway", "on site", "on-site"],
-      answer: "Yes — mobile service is one of our specialties. We come to you across " + CONFIG.serviceArea + ": home, work, wherever the vehicle is parked with room to work."
+      answer: "Yes, mobile service is one of our specialties. We come to you across " + CONFIG.serviceArea + ": home, work, wherever the vehicle is parked with room to work."
     },
     {
       keys: ["sgi", "claim", "insurance", "deductible", "auto pak", "autopak", "coverage"],
-      answer: "We're SGI accredited for glass, so we handle SGI claims directly — paperwork and billing included. Your deductible depends on your coverage (an Auto Pak can lower it). Bring your plate number and policy info and we'll take it from there."
+      answer: "We're SGI accredited for glass, so we handle SGI claims directly. Paperwork and billing included. Your deductible depends on your coverage (an Auto Pak can lower it). Bring your plate number and policy info and we'll take it from there."
     },
     {
       keys: ["adas", "calibrat", "camera", "sensor", "lane", "braking"],
-      answer: "ADAS calibration re-aims the safety cameras (lane assist, automatic braking) that often sit behind your windshield. Many newer vehicles need it after a windshield replacement — and we do it in-shop or at your location, anywhere in " + CONFIG.serviceArea + ", same visit."
+      answer: "ADAS calibration re-aims the safety cameras (lane assist, automatic braking) that often sit behind your windshield. Many newer vehicles need it after a windshield replacement, and we do it in-shop or at your location, anywhere in " + CONFIG.serviceArea + ", same visit."
     },
     {
       keys: ["quote", "price", "cost", "how much", "estimate"],
-      answer: "Quotes are free — same-day or as soon as possible. Fastest routes: the 3-step wizard on this page (tap Free Quote), or text a photo of the damage to " + CONFIG.phoneDisplay + "."
+      answer: "Quotes are free, same-day or as soon as possible. Fastest routes: the 3-step wizard on this page (tap Free Quote), or text a photo of the damage to " + CONFIG.phoneDisplay + "."
     },
     {
       keys: ["drive", "how long", "cure", "wait", "ready"],
@@ -295,7 +343,7 @@ const CONFIG = {
     },
     {
       keys: ["chip", "crack", "stone", "rock"],
-      answer: "Chips smaller than a quarter (away from edges and your sightline) can usually be repaired in under an hour — often $0 through SGI. Long cracks usually mean replacement. Text a photo to " + CONFIG.phoneDisplay + " and we'll tell you which."
+      answer: "Chips smaller than a quarter (away from edges and your sightline) can usually be repaired in under an hour, often $0 through SGI. Long cracks usually mean replacement. Text a photo to " + CONFIG.phoneDisplay + " and we'll tell you which."
     },
     {
       keys: ["service", "what do you", "offer", "aquapel", "door", "back window", "tint", "windshield"],
@@ -303,18 +351,18 @@ const CONFIG = {
     },
     {
       keys: ["phone", "call", "text", "contact", "email", "reach"],
-      answer: "Call or text " + CONFIG.phoneDisplay + " (texts welcome — we get it, phone calls aren't for everyone), or email " + CONFIG.email + "."
+      answer: "Call or text " + CONFIG.phoneDisplay + " (texts welcome, we get it, phone calls aren't for everyone), or email " + CONFIG.email + "."
     },
     {
       keys: ["thank", "thanks"],
-      answer: "Anytime! If you need anything else, " + CONFIG.phoneDisplay + " — call or text."
+      answer: "Anytime! If you need anything else, " + CONFIG.phoneDisplay + ". Call or text."
     }
   ];
   const botFallback =
-    "I'm a simple helper — try asking about hours, location, mobile service, SGI claims, ADAS, chip repair, or quotes. " +
+    "I'm a simple helper. Try asking about hours, location, mobile service, SGI claims, ADAS, chip repair, or quotes. " +
     "For anything else, call or text " + CONFIG.phoneDisplay + " and a human will sort you out.";
   const botGreeting =
-    "Hi! Quick answers about " + CONFIG.businessName + " — hours, mobile service, SGI claims, ADAS, quotes. What do you need?";
+    "Hi! Quick answers about " + CONFIG.businessName + ": hours, mobile service, SGI claims, ADAS, quotes. What do you need?";
   const botChips = ["Hours", "Mobile service", "SGI claims", "ADAS", "Free quote"];
 
   const chatbotLauncher = $("#chatbotLauncher");
@@ -400,7 +448,7 @@ const CONFIG = {
   });
 
   /* ------------------------------------------------------------------------
-     3D HERO — deferred loader
+     3D HERO: deferred loader
      Loads Three.js + the glass scene only after first paint, only when
      motion is allowed and WebGL is available. Otherwise the static SVG
      fallback in the hero stays visible.
@@ -438,7 +486,7 @@ const CONFIG = {
           });
         }
       })
-      .catch(() => { /* CDN unreachable — static fallback stays visible */ });
+      .catch(() => { /* CDN unreachable; static fallback stays visible */ });
   }
 
   /* ------------------------------------------------------------------------
