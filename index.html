@@ -209,13 +209,12 @@
 
         <ul class="trust-badges" aria-label="Why choose Gill Auto Glass">
           <!-- Official SGI Preferred Partner logo. Displayed as-is (no recolour/alter).
-               TODO (OWNER): upload the logo to assets/photos/sgi-preferred-partner.png.
-               Until it exists, this badge auto-hides via the onerror handler. -->
+               If the file is ever missing, main.js hides this badge (no inline
+               handler, so the Content-Security-Policy needs no 'unsafe-inline'). -->
           <li class="trust-badge-logo">
-            <img src="assets/photos/sgi-preferred-partner.png"
+            <img id="sgiLogo" src="assets/photos/sgi-preferred-partner.png"
                  alt="SGI Preferred Partner"
-                 loading="lazy" decoding="async"
-                 onerror="this.closest('li').hidden = true;">
+                 loading="lazy" decoding="async">
           </li>
           <li>
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.4-7 10-4-1.6-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4.5"/></svg>

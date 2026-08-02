@@ -1,0 +1,16 @@
+# Environment / secrets — never commit these.
+# The site has no backend and needs no env vars, but this guards against a
+# stray .env being added later (e.g. for a form provider key).
+.env
+.env.*
+*.local
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Netlify local dev / build output
+.netlify/

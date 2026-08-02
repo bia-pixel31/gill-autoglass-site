@@ -1,0 +1,24 @@
+# Netlify configuration for the Gill Auto Glass static site.
+# No build step: the site is served as-is from the repo root.
+[build]
+  publish = "."
+
+# ---------------------------------------------------------------------------
+# Security headers, applied to every route.
+# The CSP allow-list contains ONLY the external hosts the site actually uses:
+#   - cdnjs.cloudflare.com : Three.js + GSAP/ScrollTrigger (pinned versions)
+#   - fonts.googleapis.com : Google Fonts stylesheet (Fraunces / Instrument Sans / Hanken Grotesk)
+#   - fonts.gstatic.com    : the font files themselves
+#   - data:                : the inline SVG select-arrow (CSS) and canvas textures
+# The quote form posts to the same origin (Netlify Forms), so connect-src 'self'.
+# script-src has NO 'unsafe-inline' (all JS is external files). style-src keeps
+# 'unsafe-inline' only for the small inline <style>/style="" on the policy pages.
+# ---------------------------------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"

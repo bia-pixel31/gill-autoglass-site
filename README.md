@@ -134,6 +134,15 @@ navy → off-white → green so all three brand colours stay visible.
 - **No payments on this site.** Never add card collection; if online payment is
   ever needed, link out to a hosted processor (Square or Stripe payment link).
 - The chatbot is rule-based and runs entirely in the browser; it stores nothing.
+- **Security headers** ship in `netlify.toml`: a Content-Security-Policy whose
+  allow-list contains only the hosts actually used (cdnjs for Three.js/GSAP,
+  Google Fonts), plus `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`,
+  `Referrer-Policy: strict-origin-when-cross-origin`, and a `Permissions-Policy`
+  that disables camera/microphone/geolocation. `script-src` carries no
+  `'unsafe-inline'` (all JS lives in external files). If you add a new external
+  script, font, or image host, add it to the CSP or the resource will be blocked.
+- **No secrets in the repo.** `.env` is git-ignored; no API keys or tokens are
+  referenced in the front-end (the site has no backend to hold any).
 
 ## Deploying (free, HTTPS)
 

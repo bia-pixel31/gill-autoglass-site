@@ -73,6 +73,15 @@ const CONFIG = {
   const yearEl = $("#footerYear");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
+  // Hide the SGI logo badge if the image is missing (replaces an inline
+  // onerror handler, so the CSP script-src needs no 'unsafe-inline').
+  const sgiLogo = $("#sgiLogo");
+  if (sgiLogo) {
+    const hideBadge = () => { const li = sgiLogo.closest("li"); if (li) li.hidden = true; };
+    sgiLogo.addEventListener("error", hideBadge);
+    if (sgiLogo.complete && sgiLogo.naturalWidth === 0) hideBadge(); // already failed before JS ran
+  }
+
   /* ------------------------------------------------------------------------
      HOURS: render from CONFIG.hours into every [data-hours] element, and
      patch the LocalBusiness JSON-LD so CONFIG is the single source of truth.
